@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://l0fkabup87i6"]
+
+[ext_resource type="Shader" uid="uid://bheq8jkvpo1qn" path="res://playingWcolor.tres" id="1_kmx6c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_twb2k"]
+render_priority = 0
+shader = ExtResource("1_kmx6c")
+
+[sub_resource type="SphereMesh" id="SphereMesh_dw43h"]
+material = SubResource("ShaderMaterial_twb2k")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_dw43h")

@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvxpvfysidffr"]
+
+[ext_resource type="Texture2D" uid="uid://dg6fs4eqviyij" path="res://icon.svg" id="1_2qg3i"]
+
+[sub_resource type="Shader" id="Shader_365ym"]
+code = "shader_type canvas_item;
+
+void vertex() {
+	//VERTEX.x += 128.0; //Mindahin sudut sebanyak x
+	//VERTEX.y += 128.0; //Mindahin sudut sebanyak y
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	vec4 input_color = texture(TEXTURE,UV);
+	//Gray color
+	float average_color = (input_color.r + input_color.g + input_color.b) / 3.0;
+	vec4 new_Color = vec4(average_color, average_color,average_color,input_color.a);
+	if(new_Color.r > 0.8 && new_Color.g > 0.8 && new_Color.b >0.8){
+		new_Color.a = 0.0; //Apabila rgb > 0.8 (putih) maka akan berubah menjadi transparan
+	}
+	COLOR = new_Color;
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8fp0r"]
+shader = SubResource("Shader_365ym")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Icon" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_8fp0r")
+texture = ExtResource("1_2qg3i")
+
+[node name="Icon2" type="Sprite2D" parent="."]
+position = Vector2(-152, 7)
+texture = ExtResource("1_2qg3i")

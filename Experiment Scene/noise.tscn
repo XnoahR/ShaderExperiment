@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://bfp36yku4xdsy"]
+
+[ext_resource type="Material" uid="uid://dqnmtukcnqll7" path="res://Experiment Scene/fire.tres" id="1_1616c"]
+[ext_resource type="Texture2D" uid="uid://tdtoawcswi4m" path="res://Experiment Scene/noise.tres" id="2_ngb2a"]
+[ext_resource type="Texture2D" uid="uid://c70phsxpllr2h" path="res://Experiment Scene/bluefiremat.tres" id="3_wdppx"]
+[ext_resource type="Texture2D" uid="uid://dgd768bmsfnk2" path="res://Experiment Scene/darkfiremat.tres" id="4_elwhj"]
+
+[sub_resource type="Shader" id="Shader_da7ms"]
+code = "shader_type canvas_item;
+
+//Adding another noises
+uniform sampler2D texture2:repeat_enable; //Flag for adding looping
+uniform sampler2D colorTexture;
+
+uniform vec2 scrollNoise1 = vec2(0.1,0.1);
+uniform vec2 scrollNoise2 = vec2(0.3,0.2);
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	//Moving noises
+	float textureColor1 = texture(TEXTURE, UV + scrollNoise1 * TIME).r;
+	float textureColor2 = texture(texture2, UV + scrollNoise2 * TIME).r;
+	//Multiply the color values to get the overlaping brightness
+	//0.8 - UV.y used for limit the texture
+	float energy = textureColor1 * textureColor2 - (0.8 - UV.y) * 0.6;
+	vec4 color = texture(colorTexture,vec2(energy),1.0);
+	COLOR = color;
+	// Called for every pixel the material is visible on.
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_b3yox"]
+noise_type = 2
+seed = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_m7u0d"]
+seamless = true
+noise = SubResource("FastNoiseLite_b3yox")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kye07"]
+shader = SubResource("Shader_da7ms")
+shader_parameter/scrollNoise1 = Vector2(0.1, 0.5)
+shader_parameter/scrollNoise2 = Vector2(0.2, 1)
+shader_parameter/texture2 = SubResource("NoiseTexture2D_m7u0d")
+shader_parameter/colorTexture = ExtResource("3_wdppx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b7ohq"]
+shader = SubResource("Shader_da7ms")
+shader_parameter/scrollNoise1 = Vector2(0.1, 0.5)
+shader_parameter/scrollNoise2 = Vector2(0.2, 1)
+shader_parameter/texture2 = SubResource("NoiseTexture2D_m7u0d")
+shader_parameter/colorTexture = ExtResource("4_elwhj")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_repeat = 2
+material = ExtResource("1_1616c")
+position = Vector2(176, -47)
+texture = ExtResource("2_ngb2a")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_kye07")
+position = Vector2(-400, -47)
+texture = ExtResource("2_ngb2a")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_b7ohq")
+position = Vector2(759, -47)
+texture = ExtResource("2_ngb2a")
