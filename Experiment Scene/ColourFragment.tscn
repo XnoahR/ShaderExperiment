@@ -36,7 +36,3 @@ shader = SubResource("Shader_365ym")
 [node name="Icon" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_8fp0r")
 texture = ExtResource("1_2qg3i")
-
-[node name="Icon2" type="Sprite2D" parent="."]
-position = Vector2(-152, 7)
-texture = ExtResource("1_2qg3i")

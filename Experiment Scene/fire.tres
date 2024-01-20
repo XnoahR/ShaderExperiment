@@ -20,7 +20,8 @@ void fragment() {
 	float textureColor2 = texture(texture2, UV + scrollNoise2 * TIME).r;
 	//Multiply the color values to get the overlaping brightness
 	//0.8 - UV.y used for limit the texture
-	float energy = textureColor1 * textureColor2 - (1.0 - UV.y) * tan(TIME * 2.0) ;
+	float energy = textureColor1 * textureColor2 - (1.0 - UV.g) * tan(TIME/3.0) * 0.8;
+	//float energy = textureColor1 * textureColor2 - (1.0 - UV.y) * (sin(TIME/2.0) - sin(-TIME/(TIME*3.0)));
 	vec4 color = texture(colorTexture,vec2(energy),1.0);
 	COLOR = color;
 	// Called for every pixel the material is visible on.
